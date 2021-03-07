@@ -1,0 +1,81 @@
+version: '3.8'
+
+networks:
+  laravue:
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    tty: true
+    user: 1000:1000
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/:/etc/nginx/conf.d/
+      # - ./nginx/:/etc/nginx/conf.d/
+    depends_on:
+      - app
+      - db
+    networks:
+      - laravue
+
+  db:
+    image: mysql:5.7.32
+    container_name: mysql
+    tty: true
+    user: 1000:1000
+    ports:
+      - "4306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment: 
+      MYSQL_DATABASE: mysql
+      MYSQL_USER: root
+      MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - laravue
+
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app
+    tty: true
+    user: 1000:1000
+    depends_on:
+      - db
+    ports:
+      - "9000:9000"
+    volumes: 
+      - ./src:/var/www/html
+    networks:
+      - laravue
+
+  npm:
+    image: node:12-alpine
+    container_name: node
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    # entrypoint: ['npm', '--no-bin-links']
+    networks: 
+      - laravue
+
+
+  # composer:
+  #   image: composer:latest
+  #   container_name: composer
+  #   volumes:
+  #     - ./src:/var/www/html
+  #   working_dir: /var/www/html
+  #   entrypoint: ['composer']
+  #   networks:
+  #     - laravel
+
+
