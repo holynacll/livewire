@@ -12,6 +12,8 @@ Com Docker:
 
 6 - acessa a url localhost:8080, pra ver se ta funcionando
 
+
+
 Sem Docker:
 
 https://laravel.com/docs/8.x
