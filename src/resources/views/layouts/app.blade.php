@@ -13,44 +13,37 @@
         <!-- Styles -->
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+        <style>
+            .bg-gradient-primary {background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%); }
+        </style>
+
         <!-- Scripts -->
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
+
         <script src="{{ asset('js/app.js') }}" defer></script>
     </head>
-    <body class="font-sans antialiased">
-        <div class="container flex min-h-screen bg-gray-100">
-            {{-- @include('layouts.navigation') --}}
+    <body class="font-sans antialiased bg-gray-100 flex">
 
-            {{-- <!-- Page Heading -->
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header> --}}
+        <aside class="relative bg-white min-h-screen w-64 hidden sm:block shadow-xl">
 
-            <!-- Page Content -->
-
-                {{-- <aside class="flex flex-col w-64 border-r border-gray-200 bg-indigo-800">
-                    @include('layouts.dash')
-                </aside> --}}
-
-                <aside class="hidden md:flex flex md:flex-shrink-0">
-                    @include('layouts.dash')
-                </aside>
-
-                <main class="flex flex-col w-0 flex-1 overflow-hidden">
-
-                        <!-- Page Heading -->
-                        <header class="bg-white shadow">
-                            <div class="max-w-7xl mx-auto py-5 px-4 sm:px-6 lg:px-8">
-                                {{ $header }}
-                            </div>
-                        </header>
-                        
-                    {{ $slot }}
-                </main>
-
-
+            @include('layouts.sidebar')
             
+        </aside>
+
+        <div class="w-full flex flex-col min-h-screen overflow-y-hidden">
+            
+            <!-- Desktop Header -->
+            @include('layouts.header_desktop')
+
+           
+            <!-- Mobile Header & Nav -->
+            @include('layouts.header_mobile')
+           
+
+            {{ $slot }}
+
         </div>
+
     </body>
 </html>
