@@ -6,29 +6,29 @@
 
 <nav class="text-gray-500 text-sm pt-5">
     
-    <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">
+    <a href="{{ route('dashboard') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
         <i class="fas fa-tachometer-alt mr-3"></i>
         Dashboard
     </a>
 
-    <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">
+    <a href="{{ route('processo.form') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
         <i class="fas fa-sticky-note mr-3"></i>
-        Blank Page
+        Novo Processo
     </a>
 
-    <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">
-        <i class="fas fa-table mr-3"></i>
-        Tables
-    </a>
-
-    <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">
+    <a href="{{ route('users') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
         <i class="fas fa-align-left mr-3"></i>
-        Forms
+        Users
     </a>
 
     <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">
         <i class="fas fa-tablet-alt mr-3"></i>
-        Tabbed Content
+        Page Blank
+    </a>
+
+    <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">
+        <i class="fas fa-tablet-alt mr-3"></i>
+        Page Blank
     </a>
    
 </nav>

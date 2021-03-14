@@ -4,10 +4,10 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class ImportTransactions extends Component
+class Dashboard extends Component
 {
     public function render()
     {
-        return view('livewire.import-transactions');
+        return view('livewire.dashboard');
     }
 }

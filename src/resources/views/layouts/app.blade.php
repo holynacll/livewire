@@ -22,6 +22,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
 
         <script src="{{ asset('js/app.js') }}" defer></script>
+
+        @livewireStyles
     </head>
     <body class="font-sans antialiased bg-gray-100 flex">
 
@@ -33,17 +35,18 @@
 
         <div class="w-full flex flex-col min-h-screen overflow-y-hidden">
             
-            <!-- Desktop Header -->
+            {{-- Desktop Header --}}
             @include('layouts.header_desktop')
 
            
-            <!-- Mobile Header & Nav -->
+            {{-- Mobile Header & Nav --}}
             @include('layouts.header_mobile')
            
-
+            {{-- Main Content --}}
             {{ $slot }}
 
         </div>
-
+        
+        @livewireScripts
     </body>
 </html>

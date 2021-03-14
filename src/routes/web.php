@@ -20,15 +20,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth'])->group(function () {
    
-    Route::get('/', function () {
-        return view('dashboard.index');
-    })->name('dashboard');
-
-    Route::get('/dashboard', function () {
-        return view('dashboard.index');
-    });
+    Route::get('/', App\Http\Livewire\Dashboard::class)->name('dashboard');
 
     Route::view('profile', 'profile')->name('profile');
+
+    Route::prefix('processo')->group(function () {
+        Route::get('form', App\Http\Livewire\Processo\Form::class)->name('processo.form'); 
+    });
+
+    Route::get('users', App\Http\Livewire\Users::class)->name('users');
+
     
 });
 
