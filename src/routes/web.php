@@ -18,19 +18,121 @@ use Illuminate\Support\Facades\Route;
 // })->middleware(['auth'])->name('dashboard');
 
 
+
 Route::middleware(['auth'])->group(function () {
    
-    Route::get('/', App\Http\Livewire\Dashboard::class)->name('dashboard');
+    Route::get('/dashboard', App\Http\Livewire\Dashboard::class)->name('dashboard');
+    Route::get('/', App\Http\Livewire\Remessa\Form::class)->name('remessa.form'); 
 
     Route::view('profile', 'profile')->name('profile');
 
-    Route::prefix('processo')->group(function () {
-        Route::get('form', App\Http\Livewire\Processo\Form::class)->name('processo.form'); 
+    Route::prefix('remessa')->group(function () {
+        Route::get('/', App\Http\Livewire\Remessa\Form::class)->name('remessa.form'); 
+
+        Route::post('confirmation', function(){
+            return view('livewire.remessa.form-confirmation');
+        })->name('remessa.form-confirmation'); 
+
     });
 
     Route::get('users', App\Http\Livewire\Users::class)->name('users');
 
     
+});
+
+// TEMP FUNCTIONS
+
+Route::get('gerar-diario-oficial', function () {
+
+    \Carbon\Carbon::setLocale('pt-br');
+        
+    $remessas = \App\Models\Remessa::where('data_envio', date('Y-m-d', strtotime(now())))->get();
+
+    $dt = new \Carbon\Carbon( date('Y-m-d', strtotime(now())) );
+
+    $date_header = $dt->translatedFormat('l\, j \d\e F \d\e Y');
+
+    $pdf = new \App\Models\Pdf();
+
+    // add a page
+    $pdf->AddPage();
+
+    // CAPA
+    $pdf->SetFont('Helvetica', '', 32);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->SetXY(60, 45);
+    $pdf->Write(0,  'CAPA');
+    
+
+    // add a page
+    $pdf->AddPage();
+
+    // CAPA
+    $pdf->SetFont('Helvetica', '', 32);
+    $pdf->SetTextColor(0, 0, 0);
+    $pdf->SetXY(60, 75);
+    $pdf->Write(0,  'SUMARIO');
+
+    $pdf->SetFont('Helvetica', '', 14);
+    $gap = 0;
+
+    // SUMARIO
+    foreach($remessas as $remessa) {
+        $gap += 20;
+        $pdf->SetXY(20, 75+$gap);
+        $pdf->Write(0,  $remessa->tipo->descricao);
+    }
+
+    // CONTEUDO
+    foreach($remessas as $remessa) {
+            
+        foreach($remessa->anexos as $file) {
+            $filepath =  \Storage::disk('public')->path($file->path);
+            
+            // add a page
+            $pdf->AddPage();
+
+            // set the source file
+            $pageCount = $pdf->setSourceFile($filepath);
+
+            for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+
+                $templateId = $pdf->importPage($pageNo);
+                
+                // use the imported page and place it at point 10,10 with a width of 100 mm
+                $pdf->useTemplate($templateId, 5, 70, 200, 245);
+
+                // now write some text above the imported page
+                $pdf->SetFont('Helvetica', '', 10);
+                $pdf->SetTextColor(0, 0, 0);
+                $pdf->SetXY(145, 15);
+                $pdf->Write(0,  $date_header);
+
+                if($pageNo < $pageCount) {
+                      // add a page
+                    $pdf->AddPage();
+                }
+
+            }
+        }
+    }
+
+    $filenameTmp = sha1(md5(rand())).'.pdf';
+
+    $pdf->Output( Storage::disk('public')->path('pdf-tmp/'.$filenameTmp) ,'F');  
+
+    $url = Storage::disk('public')->url('pdf-tmp/'.$filenameTmp);
+
+    return '<a href='.$url.'>'.$url.'</a>';
+    
+
+});
+
+// SCRIPTS
+Route::get('create_tipo_remessa/{desc}', function ($desc) {
+    \App\Models\RemessaTipo::create([
+        'descricao' => $desc
+    ]);
 });
 
 

@@ -15,12 +15,20 @@
 
         <style>
             .bg-gradient-primary {background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%); }
+            #FileUpload.active {
+                /*  @apply shadow-outline-blue border-blue-300; */
+                box-shadow: 0 0 0 3px rgba(164, 202, 254, 0.45);
+                border-color: #a4cafe;
+            }
         </style>
+
+
+
 
         <!-- Scripts -->
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js" integrity="sha256-KzZiKy0DWYsnwMF+X1DvQngQ2/FxF7MF3Ff72XcpuPs=" crossorigin="anonymous"></script>
-
+        
         <script src="{{ asset('js/app.js') }}" defer></script>
 
         @livewireStyles
