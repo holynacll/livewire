@@ -28,7 +28,7 @@
                             class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md 
                             shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                                 <option value="">Selecione</option>
-                                @foreach ($remessa_tipo_collection as $item)
+                                @foreach ($tipo_remessa_collection as $item)
                                     <option value="{{ $item->id }}">{{ $item->descricao }}</option>
                                 @endforeach
                             </select>

@@ -26,6 +26,19 @@
                 <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
             </div>
 
+            <!-- Instituicao -->
+            <div>
+                <x-label for="instituicao" :value="__('Instituicao')" />
+
+                {{-- <x-select id="instituicao" class="block mt-1 w-full" name="instituicao" :value="old('instituicao')" required /> --}}
+                <select name="instituicao" id="instituicao" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                    <option value="">SELECIONE</option>
+                    @foreach (\App\Models\Instituicao::all() as $item)
+                        <option value="{{ $item->id }}">{{ $item->descricao }}</option>
+                    @endforeach
+                </select>
+            </div>
+
             <!-- Password -->
             <div class="mt-4">
                 <x-label for="password" :value="__('Password')" />

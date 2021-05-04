@@ -5,10 +5,10 @@ namespace App\Http\Livewire\Remessa;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
-use App\Models\RemessaTipo;
+use App\Models\TipoRemessa;
 use App\Services\Montagem\DOU;
 
-class Form extends Component
+class NovaRemessa extends Component
 {
     use WithFileUploads;
 
@@ -51,22 +51,28 @@ class Form extends Component
         $this->validateOnly($propertyName);
     }
 
-    public function save()
+    public function save(\App\Services\RemessaService $remessaService)
     {
         $this->data = $this->validate();
-      
-        $temporaryUrls = [];
-        foreach($this->data['destinos'] as $destino){
-            $className = "\App\Services\Montagem\\$destino";
 
-            $this->temporaryUrls[$destino] = $className::mount($this->data);
-        }
+        // save remessa
+        $remessa = $remessaService->save($this->data);
+                
+        $url = DOU::mount($remessa);
+
+        $this->temporaryUrls['DOM'] = $url;
+        // foreach($this->data['destinos'] as $destino){
+        //     $className = "\App\Services\Montagem\\$destino";
+
+        //     $this->temporaryUrls[$destino] = $className::mount($this->data);
+        // }
 
         // session()->flash('temporaryUrls', $temporaryUrls);
     }
 
     public function confirmarRemessa(\App\Services\RemessaService $remessaService)
     {
+        dd('enviar');
         if(!empty($this->data)) {
             $remessaService->save($this->data);
         }
@@ -82,8 +88,8 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.remessa.form', [
-            'remessa_tipo_collection' => RemessaTipo::all()
+        return view('livewire.remessa.nova-remessa', [
+            'tipo_remessa_collection' => TipoRemessa::all()
         ]);
     }
 }

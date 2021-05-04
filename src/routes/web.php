@@ -22,12 +22,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth'])->group(function () {
    
     Route::get('/dashboard', App\Http\Livewire\Dashboard::class)->name('dashboard');
-    Route::get('/', App\Http\Livewire\Remessa\Form::class)->name('remessa.form'); 
+    Route::get('/', App\Http\Livewire\Remessa\NovaRemessa::class)->name('remessa.create'); 
 
     Route::view('profile', 'profile')->name('profile');
 
     Route::prefix('remessa')->group(function () {
-        Route::get('/', App\Http\Livewire\Remessa\Form::class)->name('remessa.form'); 
+        Route::get('/', App\Http\Livewire\Remessa\Index::class)->name('remessa.index'); 
+        Route::get('/nova-remessa', App\Http\Livewire\Remessa\NovaRemessa::class)->name('remessa.create'); 
 
         Route::post('confirmation', function(){
             return view('livewire.remessa.form-confirmation');
@@ -37,7 +38,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('users', App\Http\Livewire\Users::class)->name('users');
 
-    
 });
 
 // TEMP FUNCTIONS
@@ -130,8 +130,21 @@ Route::get('gerar-diario-oficial', function () {
 
 // SCRIPTS
 Route::get('create_tipo_remessa/{desc}', function ($desc) {
-    \App\Models\RemessaTipo::create([
+    \App\Models\TipoRemessa::create([
         'descricao' => $desc
+    ]);
+});
+
+Route::get('create_tipo_instituicao/{desc}', function ($desc) {
+    \App\Models\TipoInstituicao::create([
+        'descricao' => $desc
+    ]);
+});
+
+Route::get('create_instituicao/{desc}', function ($desc) {
+    \App\Models\Instituicao::create([
+        'descricao' => $desc,
+        'tipo_instituicao_id' => 1
     ]);
 });
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRemessasTable extends Migration
+class CreateDomTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateRemessasTable extends Migration
      */
     public function up()
     {
-        Schema::create('remessas', function (Blueprint $table) {
+        Schema::create('dom', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->foreignId('remessa_tipo_id')->references('id')->on('remessa_tipo');
-            $table->date('data_envio');
+            $table->string('path');
+            $table->foreignId('instituicao_id')->references('id')->on('instituicoes');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateRemessasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('remessas');
+        Schema::dropIfExists('dom');
     }
 }

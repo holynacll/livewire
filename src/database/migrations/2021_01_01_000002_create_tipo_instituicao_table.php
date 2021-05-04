@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoRemessaTable extends Migration
+class CreateTipoInstituicaoTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTipoRemessaTable extends Migration
      */
     public function up()
     {
-        Schema::create('remessa_tipo', function (Blueprint $table) {
+        Schema::create('tipo_instituicao', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateTipoRemessaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('remessa_tipo');
+        Schema::dropIfExists('tipo_instituicao');
     }
 }

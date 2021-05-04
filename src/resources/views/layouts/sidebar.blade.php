@@ -11,14 +11,14 @@
         Dashboard
     </a>
 
-    <a href="{{ route('remessa.form') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
+    <a href="{{ route('remessa.create') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
         <i class="fas fa-sticky-note mr-3"></i>
         Nova Remessa
     </a>
 
-    <a href="{{ route('users') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
+    <a href="{{ route('remessa.index') }}" class="flex items-center py-4 pl-6 hover:text-gray-700">
         <i class="fas fa-align-left mr-3"></i>
-        Users
+        Remessas
     </a>
 
     <a href="#" class="flex items-center py-4 pl-6 hover:text-gray-700">

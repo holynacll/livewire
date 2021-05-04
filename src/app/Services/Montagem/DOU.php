@@ -13,7 +13,7 @@ use setasign\Fpdi\Fpdi;
 class DOU
 {
     
-    public static function mount($data) {
+    public static function mount($remessa) {
 
         Carbon::setLocale('pt-br');
 
@@ -21,12 +21,11 @@ class DOU
 
         $pdf = new Pdf();
         
-        foreach($data['anexos'] as $file) {
-            $filepath = $file->path();
+        foreach($remessa->anexos as $file) {
+            $filepath =  \Storage::disk('public')->path($file->path);
             
             // add a page
             $pdf->AddPage();
-
 
             // set the source file
             $pageCount = $pdf->setSourceFile($filepath);
