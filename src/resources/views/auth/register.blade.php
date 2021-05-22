@@ -27,13 +27,25 @@
             </div>
 
             <!-- Instituicao -->
-            <div>
+            <div class="mt-4">
                 <x-label for="instituicao" :value="__('Instituicao')" />
 
                 {{-- <x-select id="instituicao" class="block mt-1 w-full" name="instituicao" :value="old('instituicao')" required /> --}}
                 <select name="instituicao" id="instituicao" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
                     <option value="">SELECIONE</option>
                     @foreach (\App\Models\Instituicao::all() as $item)
+                        <option value="{{ $item->id }}">{{ $item->descricao }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Perfil -->
+            <div class="mt-4">
+                <x-label for="perfil" :value="__('Perfil')" />
+
+                <select name="perfil" id="perfil" class="block mt-1 w-full rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" required>
+                    <option value="">SELECIONE</option>
+                    @foreach (\App\Models\Perfil::all() as $item)
                         <option value="{{ $item->id }}">{{ $item->descricao }}</option>
                     @endforeach
                 </select>
@@ -68,5 +80,8 @@
                 </x-button>
             </div>
         </form>
+
+        <x-slot name="register"></x-slot>
+
     </x-auth-card>
 </x-guest-layout>

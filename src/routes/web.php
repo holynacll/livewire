@@ -45,8 +45,10 @@ Route::middleware(['auth'])->group(function () {
 Route::get('gerar-diario-oficial', function () {
 
     \Carbon\Carbon::setLocale('pt-br');
+
+    $date_today = date('Y-m-d', strtotime(now()));
         
-    $remessas = \App\Models\Remessa::where('data_envio', date('Y-m-d', strtotime(now())))->get();
+    $remessas = \App\Models\Remessa::where('data_envio', $date_today)->get();
 
     $dt = new \Carbon\Carbon( date('Y-m-d', strtotime(now())) );
 
@@ -54,34 +56,56 @@ Route::get('gerar-diario-oficial', function () {
 
     $pdf = new \App\Models\Pdf();
 
-    // add a page
+    // add a page - capa
     $pdf->AddPage();
 
     // CAPA
-    $pdf->SetFont('Helvetica', '', 32);
-    $pdf->SetTextColor(0, 0, 0);
-    $pdf->SetXY(60, 45);
-    $pdf->Write(0,  'CAPA');
+    $filepath = storage_path('app/public/capa.pdf');
+
+    // set the source file
+    $pdf->setSourceFile($filepath);
+
+    // import page 1
+    $tplIdx = $pdf->importPage(1);
+    // use the imported page and place it at point 10,10 with a width of 100 mm
+    $pdf->useTemplate($tplIdx);
+    // $pdf->SetFont('Helvetica', '', 32);
+    // $pdf->SetTextColor(0, 0, 0);
+    // $pdf->SetXY(60, 45);
+    // $pdf->Write(0,  'CAPA');
     
 
-    // add a page
+    // add a page - sumario
     $pdf->AddPage();
+    $pdf->setCustomTemplate();
 
-    // CAPA
+    // SUMARIO
     $pdf->SetFont('Helvetica', '', 32);
     $pdf->SetTextColor(0, 0, 0);
-    $pdf->SetXY(60, 75);
+    $pdf->SetXY(78, 80);
     $pdf->Write(0,  'SUMARIO');
 
-    $pdf->SetFont('Helvetica', '', 14);
+    $pdf->SetFont('Helvetica', '', 12);
     $gap = 0;
 
     // SUMARIO
+    $sumarioList = array();
+    $sumarioList['bullet'] = chr(149);
+    $sumarioList['margin'] = ' ';
+    $sumarioList['indent'] = 0;
+    $sumarioList['spacer'] = 0;
+    $sumarioList['text'] = array();
+
     foreach($remessas as $remessa) {
-        $gap += 20;
-        $pdf->SetXY(20, 75+$gap);
-        $pdf->Write(0,  $remessa->tipo->descricao);
+        $txtWithoutSplashs = stripslashes($remessa->titulo.' N° '.$remessa->id.'/'.date('Y', strtotime($remessa->data_envio)));
+        $sumarioList['text'][] = iconv('UTF-8', 'windows-1252', $txtWithoutSplashs);
     }
+
+    $column_width = $pdf->GetPageWidth()-30;
+    $pdf->SetXY(20, 105);
+    $pdf->MultiCellBltArray($column_width-$pdf->getX(),6,$sumarioList);
+    $pdf->Ln(20);    
+
 
     // CONTEUDO
     foreach($remessas as $remessa) {
@@ -91,6 +115,7 @@ Route::get('gerar-diario-oficial', function () {
             
             // add a page
             $pdf->AddPage();
+            $pdf->setCustomTemplate();
 
             // set the source file
             $pageCount = $pdf->setSourceFile($filepath);
@@ -111,6 +136,7 @@ Route::get('gerar-diario-oficial', function () {
                 if($pageNo < $pageCount) {
                       // add a page
                     $pdf->AddPage();
+                    $pdf->setCustomTemplate();
                 }
 
             }

@@ -19,8 +19,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'password',
-        'instituicao_id',
+        'password'
     ];
 
     /**
@@ -47,5 +46,10 @@ class User extends Authenticatable
     public function instituicao()
     {
         return $this->belongsTo(Instituicao::class, 'instituicao_id', 'id');
+    }
+
+    public function perfis()
+    {
+        return $this->hasMany(UsuarioPerfilInstituicao::class, 'user_id', 'id');
     }
 }

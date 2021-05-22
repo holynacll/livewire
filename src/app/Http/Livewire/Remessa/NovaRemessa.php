@@ -57,7 +57,7 @@ class NovaRemessa extends Component
 
         // save remessa
         $remessa = $remessaService->save($this->data);
-                
+                        
         $url = DOU::mount($remessa);
 
         $this->temporaryUrls['DOM'] = $url;

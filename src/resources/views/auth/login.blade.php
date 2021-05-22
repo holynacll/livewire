@@ -52,5 +52,11 @@
                 </x-button>
             </div>
         </form>
+
+        <x-slot name="register">
+            <a href="/register">Register now!</a>
+        </x-slot>
+        
     </x-auth-card>
+
 </x-guest-layout>

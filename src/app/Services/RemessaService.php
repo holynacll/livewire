@@ -39,11 +39,11 @@ class RemessaService
                     ]);
                 }
 
-                return $remessa;
-
                 DB::commit();
+
+                return $remessa;
             } else {
-                dd('data is empty');
+                return 'array is empty';
             }
 
         } catch (\Exception $e) {
